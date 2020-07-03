@@ -25,7 +25,6 @@
                 </div>
               <% end %>
             </div>
-
             <div class="mt-4">
               <h5><%= I18n.t('views.messages.team_leader') %></h5>
               <table class="table">
@@ -41,9 +40,9 @@
                     <tr>
                       <td><%= image_tag 'default.jpg', size: '40x40' %></td>
                       <td><%= assign.user.email %></td>
-                      <% if current_user.owner?(@team) %>
-                        <td><%= link_to I18n.t('views.button.delete'), team_assign_path(@team, assign), method: :delete, class: 'btn btn-sm btn-danger' %></td>
-                      <% end %>          
+                      <% if current_user.owner?(@team) || current_user.id == assign.user_id %>
+                        <td><%= link_to I18n.t('views.button.delete'), team_assign_path(@team, assign), method: :delete, data: { confirm: t('views.messages.destroy_confirm') }, class: 'btn btn-sm btn-danger' %></td>
+                      <% end %>
                       <% if current_user.owner?(@team) && !(assign.user_id == @team.owner_id) %>
                         <td><%= link_to I18n.t('views.button.admin'), owner_change_team_path(assign.user_id), method: :patch, class: 'btn btn-sm btn-danger' %></td>
                       <% end %>
