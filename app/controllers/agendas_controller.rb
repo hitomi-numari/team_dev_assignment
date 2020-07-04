@@ -22,7 +22,8 @@ class AgendasController < ApplicationController
   end
 
   def destroy
-    if @agenda.user_id == current_user || @agenda.team.owner_id
+    # binding.pry
+    if @agenda.user_id == current_user || @agenda.team.owner_id == current_user
       @agenda.destroy
       informed_members = @agenda.team.assigns.map(&:user)
       DeleteAgendaInfotMailer.delete_agenda_infot_mail(informed_members).deliver
