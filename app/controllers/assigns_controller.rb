@@ -1,6 +1,5 @@
 class AssignsController < ApplicationController
   before_action :authenticate_user!
-  before_action :if_not_self, only: %i[edit update destroy]
 
   def create
     team = Team.friendly.find(params[:team_id])
@@ -46,13 +45,6 @@ class AssignsController < ApplicationController
   def set_next_team(assign, assigned_user)
     another_team = Assign.find_by(user_id: assigned_user.id).team
     change_keep_team(assigned_user, another_team) if assigned_user.keep_team_id == assign.team_id
-  end
-
-  def if_not_self
-    unless current_user.self?(assign)
-      flash[:notice] = I18n.t('views.messages.no_authority')
-      redirect_to team_path
-    end
   end
 
 end
